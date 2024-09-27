@@ -1,8 +1,14 @@
 asgiref==3.8.1
+beautifulsoup4==4.12.3
 Django==5.1.1
+django-bootstrap5==24.3
+django-bootstrap5-form==5.0.1
 django-environ==0.11.2
 psycopg==3.2.2
+psycopg-binary==3.2.2
 python-dotenv==1.0.1
+pytz==2024.2
+soupsieve==2.6
 sqlparse==0.5.1
 typing_extensions==4.12.2
 tzdata==2024.2
