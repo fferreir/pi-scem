@@ -1,11 +1,13 @@
 {% extends "base.html" %}
+{% load django_bootstrap5 %}
 {% block title %}Log-in{% endblock %}
 {% block content %}
     <h1>Log-in</h1>
-    <p>Por favor, use use o seguinte formulaŕio para entrar:</p>
+    <p>Por favor, digite usuário e senha para entrar:</p>
     <form method="post">
-        {{ form.as_p }}
         {% csrf_token %}
-        <p><input type="submit" value="Log in"></p>
+        {% bootstrap_form form %}
+        {% bootstrap_button button_type="submit" content="Log in" %}
+        
     </form>
 {% endblock %}

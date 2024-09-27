@@ -1,11 +1,17 @@
 {% load static %}
+{% load django_bootstrap5 %}
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <link href="{% static "css/base.css" %}" rel="stylesheet">
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/lumen/bootstrap.min.css"
+    
 </head>
 <body>
+    {% bootstrap_messages %}
     <div id="header">
         <span class="logo">SCEM</span>
     </div>
