@@ -9,5 +9,8 @@
             <input type="hidden" name="next" value="{{ next }}" />
             {% bootstrap_button button_type="submit" content="Log in" %}
         </form>
+        <p>
+            <a href="{% url "password_reset" %}">Esqueceu sua senha?</a>
+        </p>
     </div>
 {% endblock %}
