@@ -2,12 +2,12 @@
 {% load django_bootstrap5 %}
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <title>{% block title %}{% endblock %}</title>
     {% bootstrap_css %}
     {% bootstrap_javascript %}
-    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/sandstone/bootstrap.css"
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/sandstone/bootstrap.css">
 </head>
 <body>
     {% bootstrap_messages %}
@@ -45,7 +45,7 @@
                   </ul>
                     {% if request.user.is_authenticated %} 
                         <form class="d-flex" action="{% url "logout" %}" method="post">
-                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
+                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Log out</button>
                             {% csrf_token %}
                         </form>
                     {% endif %}
