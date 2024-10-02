@@ -35,6 +35,9 @@ class Maintenance(models.Model):
         related_name='products',
         on_delete=models.CASCADE
     )
+    requestor = models.CharField(max_length=200)
+    address = models.CharField(max_length=200)
+    city = models.CharField(max_length=200)
     technician = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
