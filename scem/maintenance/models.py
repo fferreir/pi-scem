@@ -21,7 +21,7 @@ class Unit(models.Model):
         verbose_name = 'unidade'
         verbose_name_plural = 'unidades'
 
-    def__str__(self):
+    def __str__(self):
         return self.name
 
 class Maintenance(models.Model):
@@ -64,5 +64,5 @@ class Maintenance(models.Model):
         verbose_name = 'manutenção'
         verbose_name_plural = 'manutenções'
 
-    def__str__(self):
+    def __str__(self):
         return self.name
