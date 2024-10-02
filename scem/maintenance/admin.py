@@ -1,10 +1,10 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Maintenance, Unit
+from .models import Order, Unit
 
-@admin.register(Maintenance)
-class MaintenanceAdmin(admin.ModelAdmin):
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
     list_display = [
         'unit',
         'technician',

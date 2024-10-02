@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 # Create your models here.
 class Unit(models.Model):
@@ -18,13 +19,17 @@ class Unit(models.Model):
         indexes = [
         models.Index(fields=['name']),
         ]
-        verbose_name = 'unidade'
-        verbose_name_plural = 'unidades'
+        verbose_name = 'unit'
+        verbose_name_plural = 'unities'
+
+    def get_absolute_url(self):
+        return reverse(
+            'maintenance:maintenance_list_by_unit', args = [self.slug])
 
     def __str__(self):
         return self.name
 
-class Maintenance(models.Model):
+class Order(models.Model):
     class Status(models.TextChoices):
         FILA = 'EF', 'Em fila'
         ATENDIMENTO = 'EA', 'Em atendimento'
@@ -32,16 +37,16 @@ class Maintenance(models.Model):
 
     unit = models.ForeignKey(
         Unit,
-        related_name='products',
-        on_delete=models.CASCADE
+        related_name = 'orders',
+        on_delete = models.CASCADE
     )
     requestor = models.CharField(max_length=200)
-    address = models.CharField(max_length=200)
+    addr = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     technician = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='maintenances'
+        on_delete = models.CASCADE,
+        related_name = 'orders'
     )
     tag = models.CharField(max_length=200)
     description = models.TextField(blank=True)
@@ -64,8 +69,8 @@ class Maintenance(models.Model):
             models.Index(fields=['unit', 'technician']),
             models.Index(fields=['created']),
         ]
-        verbose_name = 'manutenção'
-        verbose_name_plural = 'manutenções'
+        verbose_name = 'order'
+        verbose_name_plural = 'orders'
 
     def __str__(self):
         return self.name
