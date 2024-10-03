@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('', views.dashboard, name='dashboard'),
+    path('edit/', views.edit, name='edit'),
 ]
