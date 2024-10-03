@@ -46,14 +46,15 @@ class Order(models.Model):
     technician = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete = models.CASCADE,
-        related_name = 'orders'
+        related_name = 'orders',
+        null = True,
     )
-    tag = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    start_date = models.DateField()
-    start_time = models.TimeField()
-    end_date = models.DateField()
-    end_time = models.TimeField()
+    tag = models.CharField(max_length=200, null=True, blank=True)
+    description = models.TextField(null=True,blank=True)
+    start_date = models.DateField(null=True,blank=True)
+    start_time = models.TimeField(null=True,blank=True)
+    end_date = models.DateField(null=True,blank=True)
+    end_time = models.TimeField(null=True,blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=2,
