@@ -7,16 +7,27 @@ from .models import Order, Unit
 def order_list(request, unit_slug=None):
     unit = None
     unities = Unit.objects.all()
-    orders = Order.objects.filter(status=True)
+    orders = Order.objects.filter(status="EF")
     if unit_slug:
         unit = get_object_or_404(Unit, slug=unit_slug)
-        orders = orders.filter(uniti=unit)
+        orders = orders.filter(unit=unit)
     return render(
         request,
-        'maintenance/unit/list.html',
+        'maintenance/order/list.html',
         {
-            'unit': unit,
+            'unit':unit,
             'unities': unities,
-            'orders': orders
+            'orders': orders,
         }
+    )
+
+@login_required
+def order_detail(request, id, slug):
+    order = get_object_or_404(
+    Order, id=id, slug=slug, status='EF'
+    )
+    return render(
+        request,
+        'maintenance/order/detail.html',
+        {'order': order}
     )

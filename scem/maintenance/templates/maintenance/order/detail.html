@@ -1,0 +1,17 @@
+{% extends "maintenance/base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}
+    {{ order.id }}
+{% endblock %}
+{% block content %}
+<div class="product-detail">
+    <h1>{{ order.id }}</h1>
+    <h2>
+        <a href="{{ order.unit.get_absolute_url }}">
+        {{ order.unit }}
+        </a>
+    </h2>
+<p class="price">{{ order.created }}</p>
+{{ order.description|linebreaks }}
+</div>
+{% endblock %}

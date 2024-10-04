@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/sandstone/bootstrap.css">
 </head>
 <body>
-    {% bootstrap_messages %}
+    
     <div id="header">
         {% if request.user.is_authenticated %}
             <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
@@ -55,6 +55,7 @@
         {% endif %}
     </div>
     <div id="content" class="container">
+        {% bootstrap_messages %}
         {% block content %}
         {% endblock %}
     </div>

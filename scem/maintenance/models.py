@@ -19,12 +19,12 @@ class Unit(models.Model):
         indexes = [
         models.Index(fields=['name']),
         ]
-        verbose_name = 'unit'
+        verbose_name = 'order'
         verbose_name_plural = 'unities'
 
     def get_absolute_url(self):
         return reverse(
-            'maintenance:maintenance_list_by_unit', args = [self.slug])
+            'maintenance:order_list_by_unit', args = [self.slug])
 
     def __str__(self):
         return self.name
@@ -67,11 +67,14 @@ class Order(models.Model):
         ordering = ['created']
         indexes = [
             models.Index(fields=['id', 'slug']),
-            models.Index(fields=['unit', 'technician']),
+            models.Index(fields=['technician']),
             models.Index(fields=['created']),
         ]
         verbose_name = 'order'
         verbose_name_plural = 'orders'
 
+    def get_absolute_url(self):
+        return reverse('maintenance:order_detail', args=[self.id, self.slug])
+
     def __str__(self):
-        return self.name
+        return str(self.id)

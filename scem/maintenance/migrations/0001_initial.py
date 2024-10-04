@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "verbose_name": "unit",
+                "verbose_name": "order",
                 "verbose_name_plural": "unities",
                 "ordering": ["name"],
             },
@@ -90,11 +90,11 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "unit",
+                    "order",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="orders",
-                        to="maintenance.unit",
+                        to="maintenance.order",
                     ),
                 ),
             ],
@@ -105,7 +105,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AddIndex(
-            model_name="unit",
+            model_name="order",
             index=models.Index(fields=["name"], name="maintenance_name_001a85_idx"),
         ),
         migrations.AddIndex(
@@ -115,7 +115,7 @@ class Migration(migrations.Migration):
         migrations.AddIndex(
             model_name="order",
             index=models.Index(
-                fields=["unit", "technician"], name="maintenance_unit_id_0437f0_idx"
+                fields=["order", "technician"], name="maintenance_unit_id_0437f0_idx"
             ),
         ),
         migrations.AddIndex(

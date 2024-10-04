@@ -24,7 +24,7 @@ def edit(request):
             user_form.save()
             messages.success(
                 request,
-                'Perfil usuáriao atualizado com sucesso'
+                'Perfil atualizado com sucesso'
             )
         else:
             messages.error(request, 'Erro ao atualizar o perfil')
