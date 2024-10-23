@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
+from django.forms import ModelForm
 
 # Create your models here.
 class Unit(models.Model):
@@ -55,6 +56,8 @@ class Order(models.Model):
     start_time = models.TimeField(null=True,blank=True)
     end_date = models.DateField(null=True,blank=True)
     end_time = models.TimeField(null=True,blank=True)
+    normal_time = models.FloatField(null=True,blank=True, default=0)
+    over_time = models.FloatField(null=True,blank=True, default=0)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=2,

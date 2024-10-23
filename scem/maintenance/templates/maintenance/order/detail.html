@@ -1,17 +1,91 @@
 {% extends "maintenance/base.html" %}
 {% load django_bootstrap5 %}
 {% block title %}
-    {{ order.id }}
+    Editar ordem # {{ order.id }}
 {% endblock %}
 {% block content %}
-<div class="product-detail">
-    <h1>{{ order.id }}</h1>
-    <h2>
-        <a href="{{ order.unit.get_absolute_url }}">
-        {{ order.unit }}
-        </a>
-    </h2>
-<p class="price">{{ order.created }}</p>
-{{ order.description|linebreaks }}
+<div class="container pt-5" style="width: 600px" >
+    <h2>Edite a ordem #{{ order.id }}</h2>
+     <form  method="post" >
+         {% csrf_token %}
+         <div>
+             <label for="unit" class="form-label mt-4">Unidade</label>
+             <select class="form-select" id="unit" name="unit" disabled="">
+                 <option value="{{ order.unit_id }}">{{ order.unit }}</option>
+             </select>
+         </div>
+         <div>
+             <fieldset disabled="">
+                <label class="form-label mt-4" for="requestor">Solicitante</label>
+                <input class="form-control" id="requestor" name="requestor" type="text" placeholder="{{ order.requestor }}" disabled="">
+             </fieldset>
+         </div>
+         <div>
+             <fieldset disabled="">
+                <label class="form-label mt-4" for="addrr">Endereço</label>
+                <input class="form-control" id="addr" name="addr" type="text" placeholder="{{ order.addr }}" disabled="">
+             </fieldset>
+         </div>
+        <div>
+             <fieldset disabled="">
+                <label class="form-label mt-4" for="city">Cidade</label>
+                <input class="form-control" id="city" name="city" type="text" placeholder="{{ order.city }}" disabled="">
+             </fieldset>
+         </div>
+         <div>
+             <label for="technician" class="form-label mt-4">Técnico</label>
+             <select class="form-select" id="technician" name="technician">
+                 {% for user in users %}
+                     <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                 {% endfor %}
+             </select>
+         </div>
+         <div>
+             <fieldset>
+                 <label class="form-label mt-4" for="tag">TAG</label>
+                 <input class="form-control" id="tag" name="tag" type="text" placeholder="">
+             </fieldset>
+         </div>
+         <div>
+             <label for="description" class="form-label mt-4">Descrição do serviço</label>
+             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+         </div>
+         <div class="row">
+             <div class="col">
+                 <label for="start_date" class="form-label mt-4">Data de início</label>
+                 <input type="date" id="start_date" name="start_date" value="" min="2024-01-01" max="2024-12-31" />
+             </div>
+             <div class="col">
+                 <label for="start_time" class="form-label mt-4">Hora de início</label>
+                 <input type="time" id="start_time" name="start_time" value=""  />
+             </div>
+         </div>
+         <div class="row">
+             <div class="col">
+                 <label for="end_date" class="form-label mt-4">Data de término</label>
+                 <input type="date" id="end_date" name="end_date" value="" min="2024-01-01" max="2024-12-31" />
+             </div>
+             <div class="col">
+                 <label for="end_time" class="form-label mt-4">Hora de término</label>
+                 <input type="time" id="start" name="end_time" value="" />
+             </div>
+         </div>
+         <div>
+             <label for="status" class="form-label mt-4">Status</label>
+             <select class="form-select" id="status" name="status">
+                 <option value="EF">Em fila</option>
+                 <option value="EA">Em atendimento</option>
+                 <option value="FI">Finalizado</option>
+             </select>
+         </div>
+         <div>
+             <fieldset>
+                 <input type="hidden" id="slug" name="slug" value={{ order.slug }}>
+             </fieldset>
+         </div>
+         <div>
+             {% bootstrap_button button_type="submit" content="Atualizar" %}
+         </div>
+     </form>
 </div>
 {% endblock %}
