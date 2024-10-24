@@ -6,35 +6,29 @@
 {% block content %}
 <div class="container " style="width: 600px" >
     <h2>Edite a ordem #{{ order.id }}</h2>
-     <form  method="post" >
+     <form  method="POST" >
          {% csrf_token %}
          <div>
              <label for="unit" class="form-label mt-4">Unidade</label>
-             <select class="form-select" id="unit" name="unit" disabled="">
+             <select class="form-select" id="id_unit" name="unit" readonly="True">
                  <option value="{{ order.unit_id }}" selected>{{ order.unit }}</option>
              </select>
          </div>
          <div>
-             <fieldset disabled="">
-                <label class="form-label mt-4" for="requestor">Solicitante</label>
-                <input class="form-control" id="requestor" name="requestor" type="text" placeholder="{{ order.requestor }}" disabled="">
-             </fieldset>
+             <label class="form-label mt-4" for="requestor">Solicitante</label>
+             <input class="form-control" id="id_requestor" name="requestor" type="text" readonly="True" value="{{ order.requestor }}">
          </div>
          <div>
-             <fieldset disabled="">
-                <label class="form-label mt-4" for="addrr">Endereço</label>
-                <input class="form-control" id="addr" name="addr" type="text" placeholder="{{ order.addr }}" disabled="">
-             </fieldset>
+             <label class="form-label mt-4" for="addr">Endereço</label>
+             <input class="form-control" id="id_addr" name="addr" type="text" readonly="True" value="{{ order.addr }}" >
          </div>
-        <div>
-             <fieldset disabled="">
-                <label class="form-label mt-4" for="city">Cidade</label>
-                <input class="form-control" id="city" name="city" type="text" placeholder="{{ order.city }}" disabled="">
-             </fieldset>
+         <div>
+             <label class="form-label mt-4" for="city">Cidade</label>
+             <input class="form-control" id="id_city" name="city" type="text" readonly="True" value="{{ order.city }}">
          </div>
          <div>
              <label for="technician" class="form-label mt-4">Técnico</label>
-             <select class="form-select" id="technician" name="technician">
+             <select class="form-select" id="id_technician" name="technician">
                  {% for user in users %}
                      {% if order.technician == user %}
                          <option value="{{ user.id }}" selected>{{ user.first_name }} {{ user.last_name }}</option>
@@ -45,53 +39,51 @@
              </select>
          </div>
          <div>
-             <fieldset>
-                 <label class="form-label mt-4" for="tag">TAG</label>
-                 <input class="form-control" id="tag" name="tag" type="text" placeholder="">
-             </fieldset>
+             <label class="form-label mt-4" for="tag">TAG</label>
+             <input class="form-control" id="id_tag" name="tag" type="text" value="{{ order.tag }}">
          </div>
          <div>
              <label for="description" class="form-label mt-4">Descrição do serviço</label>
-             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+             <textarea class="form-control" id="id_description" name="description" rows="3" >{{ order.description }}</textarea>
          </div>
          <div class="row">
              <div class="col">
                  <label for="start_date" class="form-label mt-4">Data de início</label>
-                 <input type="date" id="start_date" name="start_date" value="" min="2024-01-01" max="2024-12-31" />
+                 <input type="date" id="id_start_date" name="start_date" value="{{ order.start_date|date:'Y-m-d' }}" />
              </div>
              <div class="col">
                  <label for="start_time" class="form-label mt-4">Hora de início</label>
-                 <input type="time" id="start_time" name="start_time" value=""  />
+                 <input type="time" id="id_start_time" name="start_time" value="{{ order.start_time }}" />
              </div>
          </div>
          <div class="row">
              <div class="col">
                  <label for="end_date" class="form-label mt-4">Data de término</label>
-                 <input type="date" id="end_date" name="end_date" value="" min="2024-01-01" max="2024-12-31" />
+                 <input type="date" id="id_end_date" name="end_date" value="{{ order.end_date|date:'Y-m-d' }}" />
              </div>
              <div class="col">
                  <label for="end_time" class="form-label mt-4">Hora de término</label>
-                 <input type="time" id="start" name="end_time" value="" />
+                 <input type="time" id="id_end_time" name="end_time" value="{{ order.end_time }}" />
              </div>
          </div>
          <div>
              <label for="status" class="form-label mt-4">Status</label>
-             <select class="form-select" id="status" name="status">
+             <select class="form-select" id="id_status" name="status">
                  <option value="EF"{% if order.status == "EF" %} selected {% endif %}>Em fila</option>
                  <option value="FI"{% if order.status == "FI" %} selected {% endif %}>Finalizado</option>
              </select>
          </div>
-         <div class=" mt-4">
-             <fieldset>
-                 <input type="hidden" id="slug" name="slug" value={{ order.slug }}>
-             </fieldset>
+         <div>
+              <input type="hidden" id="id_normal_time" name="normal_time" value="0">
          </div>
          <div>
-             {% bootstrap_button button_type="submit" content="Atualizar" %}
+            <input type="hidden" id="id_over_time" name="over_time" value="0">
          </div>
-     </div>
-         <div class=" mt-4">
-
+         <div>
+             <input type="hidden" id="id_slug" name="slug" value="{{ order.slug }}">
+         </div>
+         <div class="mt-4">
+             {% bootstrap_button button_type="submit" content="Atualizar" %}
          </div>
      </form>
 </div>

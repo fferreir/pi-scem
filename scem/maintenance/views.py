@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404,render,redirect
 from .models import Order, Unit
 from django.contrib.auth import get_user_model
+from .forms import OrderForm
+from django.contrib import messages
 # Create your views here.
 @login_required
 def order_list(request, unit_slug=None):
@@ -28,6 +30,17 @@ def order_detail(request, id, slug):
     order = get_object_or_404(
         Order, id=id, slug=slug, status='EF'
     )
+
+    if request.method == "POST":
+
+        form = OrderForm(request.POST or None, instance=order)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request,
+                'Ordem de serviço atualizada com sucesso'
+            )
+            return redirect("/")
     return render(
                 request,
                 'maintenance/order/detail.html',
@@ -36,12 +49,3 @@ def order_detail(request, id, slug):
                  'users': users
                  }
             )
-@login_required
-def order_update(request, id, slug):
-    order = get_object_or_404(
-        Order, id=id, slug=slug, status='FI'
-    )
-    tag = request.POST.get('tag')
-    order.tag = tag
-    order.save()
-    redirect(order_list)
