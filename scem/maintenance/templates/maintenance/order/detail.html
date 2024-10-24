@@ -4,14 +4,14 @@
     Editar ordem # {{ order.id }}
 {% endblock %}
 {% block content %}
-<div class="container pt-5" style="width: 600px" >
+<div class="container " style="width: 600px" >
     <h2>Edite a ordem #{{ order.id }}</h2>
      <form  method="post" >
          {% csrf_token %}
          <div>
              <label for="unit" class="form-label mt-4">Unidade</label>
              <select class="form-select" id="unit" name="unit" disabled="">
-                 <option value="{{ order.unit_id }}">{{ order.unit }}</option>
+                 <option value="{{ order.unit_id }}" selected>{{ order.unit }}</option>
              </select>
          </div>
          <div>
@@ -36,7 +36,11 @@
              <label for="technician" class="form-label mt-4">Técnico</label>
              <select class="form-select" id="technician" name="technician">
                  {% for user in users %}
-                     <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                     {% if order.technician == user %}
+                         <option value="{{ user.id }}" selected>{{ user.first_name }} {{ user.last_name }}</option>
+                     {% else %}
+                         <option value="{{ user.id }}" >{{ user.first_name }} {{ user.last_name }}</option>
+                     {% endif %}
                  {% endfor %}
              </select>
          </div>
@@ -73,18 +77,21 @@
          <div>
              <label for="status" class="form-label mt-4">Status</label>
              <select class="form-select" id="status" name="status">
-                 <option value="EF">Em fila</option>
-                 <option value="EA">Em atendimento</option>
-                 <option value="FI">Finalizado</option>
+                 <option value="EF"{% if order.status == "EF" %} selected {% endif %}>Em fila</option>
+                 <option value="FI"{% if order.status == "FI" %} selected {% endif %}>Finalizado</option>
              </select>
          </div>
-         <div>
+         <div class=" mt-4">
              <fieldset>
                  <input type="hidden" id="slug" name="slug" value={{ order.slug }}>
              </fieldset>
          </div>
          <div>
              {% bootstrap_button button_type="submit" content="Atualizar" %}
+         </div>
+     </div>
+         <div class=" mt-4">
+
          </div>
      </form>
 </div>

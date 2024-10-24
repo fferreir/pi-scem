@@ -33,7 +33,6 @@ class Unit(models.Model):
 class Order(models.Model):
     class Status(models.TextChoices):
         FILA = 'EF', 'Em fila'
-        ATENDIMENTO = 'EA', 'Em atendimento'
         FINALIZADO = 'FI', 'Finalizado'
 
     unit = models.ForeignKey(
