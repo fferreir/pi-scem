@@ -1,6 +1,5 @@
-{% load static %}
-{% load django_bootstrap5 %}
 
+{% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/sandstone/bootstrap.css">
 </head>
 <body>
-    
     <div id="header">
         {% if request.user.is_authenticated %}
             <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
@@ -19,16 +17,16 @@
                 <div class="collapse navbar-collapse" id="navbarColor01">
                   <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                      <a class="nav-link active" href="/account/">Dashboard
+                      <a class="nav-link" href="/account/">Dashboard
                         <span class="visually-hidden">(current)</span>
                       </a>
                     </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="/">Ordens</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="/report">Relatório</a>
-                      </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/">Ordens</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" href="/report">Relatório</a>
+                    </li>
                   </ul>
                     {% if request.user.is_authenticated %}
                         <form class="d-flex" action="{% url "logout" %}" method="post">
@@ -53,8 +51,14 @@
     </div>
     <div id="content" class="container">
         {% bootstrap_messages %}
+        <div class="container pt-5">
         {% block content %}
+            <h1>Relatório de horas trabalhadas</h1>
+            {% for technician in summary %}
+                <div class="card">{{ technician }}</div>
+            {% endfor %}
         {% endblock %}
+        </div>
     </div>
 </body>
 </html>
