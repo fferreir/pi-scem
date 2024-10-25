@@ -6,6 +6,7 @@ from .forms import OrderForm
 from django.contrib import messages
 from django.db.models import Sum
 from django.db.models.functions import ExtractYear, ExtractMonth
+import datetime
 # Create your views here.
 @login_required
 def order_list(request, unit_slug=None):
@@ -35,9 +36,45 @@ def order_detail(request, id, slug):
 
     if request.method == "POST":
 
-        form = OrderForm(request.POST or None, instance=order)
+        form = OrderForm(request.POST, instance=order)
         if form.is_valid():
-            form.save()
+            form1 = form.save(commit=False)
+            end_date = datetime.date.fromisoformat(str(form.cleaned_data['end_date']))
+            start_date = datetime.date.fromisoformat(str(form.cleaned_data['start_date']))
+            start_time = form.cleaned_data['start_time']
+            end_time = form.cleaned_data['end_time']
+            start = datetime.datetime.combine(start_date, start_time)
+            end = datetime.datetime.combine(end_date, end_time)
+            hours = (end-start).total_seconds()/3600
+            over_time = 0
+            normal_time = 0
+            if start.day == end.day:
+                if start < datetime.datetime.combine(start_date,datetime.datetime.strptime("08:00", "%H:%M").time()):
+                    if end < datetime.datetime.combine(start_date,
+                                                         datetime.datetime.strptime("08:00", "%H:%M").time()):
+                        over_time = (end - start).total_seconds()/3600
+                    elif end < datetime.datetime.combine(start_date,
+                                                         datetime.datetime.strptime("18:00", "%H:%M").time()):
+                        over_time = (datetime.datetime.combine(start_date,datetime.datetime.strptime("08:00", "%H:%M").time())-start).total_seconds()/3600
+                    else:
+                        over_time = (datetime.datetime.combine(start_date, datetime.datetime.strptime("08:00",
+                                                                                                      "%H:%M").time()) - start).total_seconds() / 3600 + (end - datetime.datetime.combine(start_date, datetime.datetime.strptime("18:00",
+                                                                                                      "%H:%M").time())).total_seconds() / 3600
+                elif start < datetime.datetime.combine(start_date,datetime.datetime.strptime("18:00", "%H:%M").time()):
+                    if end < datetime.datetime.combine(start_date,
+                                                         datetime.datetime.strptime("18:00", "%H:%M").time()):
+                        over_time = (end - start).total_seconds() / 3600
+                    else:
+                        over_time = (end - datetime.datetime.combine(start_date, datetime.datetime.strptime("18:00",
+                                                                                                "%H:%M").time())).total_seconds() / 3600
+                else:
+                    over_time = (end - start).total_seconds() / 3600
+
+
+            normal_time = (end - start).total_seconds() / 3600 - over_time
+            form1.normal_time  = normal_time
+            form1.over_time = over_time
+            form1.save()
             messages.success(
                 request,
                 'Ordem de serviço atualizada com sucesso'
@@ -59,7 +96,8 @@ def report(request):
     summary = (Order.objects.select_related('technician').values('technician','technician__first_name','technician__last_name',
                                    month = ExtractMonth('end_date'),
                                    year = ExtractYear('end_date')
-                                    ).order_by('technician',
+                                    ).order_by('technician__first_name',
+                                               'technician__last_name',
                                                'year',
                                                'month'
                                                ).annotate(total_normal_time=Sum('normal_time'),
