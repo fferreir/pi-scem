@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from .forms import OrderForm
 from django.contrib import messages
 from django.db.models import Sum
+from django.db.models.functions import ExtractYear, ExtractMonth
 # Create your views here.
 @login_required
 def order_list(request, unit_slug=None):
@@ -54,8 +55,15 @@ def order_detail(request, id, slug):
 @login_required
 def report(request):
     User = get_user_model()
-    users = User.objects.all()
-    summary = Order.objects.values('technician').order_by('technician').annotate(total_normal_time=Sum('normal_time'), total_over_time=Sum('over_time'))
+    users = User.objects.values('id', 'first_name', 'last_name')
+    summary = (Order.objects.select_related('technician').values('technician','technician__first_name','technician__last_name',
+                                   month = ExtractMonth('end_date'),
+                                   year = ExtractYear('end_date')
+                                    ).order_by('technician',
+                                               'year',
+                                               'month'
+                                               ).annotate(total_normal_time=Sum('normal_time'),
+                                                          total_over_time=Sum('over_time')))
     return render(
         request,
         'maintenance/order/summary.html',

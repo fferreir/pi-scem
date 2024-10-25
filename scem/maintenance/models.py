@@ -46,7 +46,7 @@ class Order(models.Model):
     technician = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete = models.CASCADE,
-        related_name = 'orders',
+        related_name = 'user_detail',
         null = True,
     )
     tag = models.CharField(max_length=200, null=True, blank=True)
