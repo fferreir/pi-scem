@@ -69,9 +69,46 @@ def order_detail(request, id, slug):
                                                                                                 "%H:%M").time())).total_seconds() / 3600
                 else:
                     over_time = (end - start).total_seconds() / 3600
-
-
-            normal_time = (end - start).total_seconds() / 3600 - over_time
+            elif hours < 48:
+                if start < datetime.datetime.combine(start_date, datetime.datetime.strptime("08:00", "%H:%M").time()):
+                    if end < datetime.datetime.combine(end_date,
+                                                       datetime.datetime.strptime("08:00", "%H:%M").time()):
+                        over_time = (datetime.datetime.combine(start_date, datetime.datetime.strptime("08:00", "%H:%M").time())-start).total_seconds()/3600 + (end - datetime.datetime.combine(start_date,
+                                                       datetime.datetime.strptime("18:00", "%H:%M").time())).total_seconds()/3600
+                    elif end > datetime.datetime.combine(end_date,
+                                                       datetime.datetime.strptime("18:00", "%H:%M").time()):
+                        over_time = ((datetime.datetime.combine(start_date, datetime.datetime.strptime("08:00",
+                                                                                                      "%H:%M").time()) - start).total_seconds() / 3600 +
+                                     14 +
+                                     (end - datetime.datetime.combine(end_date,
+                                                                                datetime.datetime.strptime("18:00",
+                                                                                                           "%H:%M").time())).total_seconds() / 3600)
+                elif start >= datetime.datetime.combine(start_date, datetime.datetime.strptime("08:00", "%H:%M").time()):
+                    if end < datetime.datetime.combine(end_date, datetime.datetime.strptime("08:00", "%H:%M").time()):
+                        if start > datetime.datetime.combine(start_date, datetime.datetime.strptime("18:00", "%H:%M").time()):
+                            over_time = (end - start).total_seconds() / 3600
+                        else:
+                            over_time = (end - datetime.datetime.combine(start_date, datetime.datetime.strptime("18:00", "%H:%M").time())).total_seconds() / 3600
+                    elif end > datetime.datetime.combine(end_date,
+                                                       datetime.datetime.strptime("18:00", "%H:%M").time()):
+                        if start > datetime.datetime.combine(start_date,
+                                                             datetime.datetime.strptime("18:00", "%H:%M").time()):
+                            over_time = (datetime.datetime.combine(end_date, datetime.datetime.strptime("08:00",
+                                                                                                                "%H:%M").time())-start).total_seconds() / 3600 + (end-datetime.datetime.combine(end_date, datetime.datetime.strptime("18:00",
+                                                                                                                "%H:%M").time()))
+                        else:
+                            over_time = 14 + (end-datetime.datetime.combine(end_date, datetime.datetime.strptime("18:00",
+                                                                                                       "%H:%M").time())).total_seconds() / 3600
+            else:
+                messages.error(
+                    request,
+                    'Datas incompatíveis, horas trabalhadas não serão calculadas'
+                )
+            if hours > 48:
+                normal_time = 0
+                over_time = 0
+            else:
+                normal_time = (end - start).total_seconds() / 3600 - over_time
             form1.normal_time  = normal_time
             form1.over_time = over_time
             form1.save()
