@@ -63,7 +63,7 @@ def order_detail(request, id, slug):
                 elif start < datetime.datetime.combine(start_date,datetime.datetime.strptime("18:00", "%H:%M").time()):
                     if end < datetime.datetime.combine(start_date,
                                                          datetime.datetime.strptime("18:00", "%H:%M").time()):
-                        over_time = (end - start).total_seconds() / 3600
+                        over_time = 0
                     else:
                         over_time = (end - datetime.datetime.combine(start_date, datetime.datetime.strptime("18:00",
                                                                                                 "%H:%M").time())).total_seconds() / 3600
